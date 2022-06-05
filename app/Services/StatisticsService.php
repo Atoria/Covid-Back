@@ -94,7 +94,7 @@ class StatisticsService
             DB::raw('SUM(recovered) as recovered'),
             DB::raw('SUM(critical) as critical'),
             DB::raw('SUM(deaths) as deaths')
-        )->get()->toArray();
+        )->get()->first();
 
     }
 
@@ -133,9 +133,16 @@ class StatisticsService
 
         $data = $query->get()->toArray();
 
+        $list = [];
+
+        foreach ($data as $item){
+            $item['name'] = json_decode($item['name'],true);
+            $list[] = $item;
+        }
+
         return [
             'total' => $total,
-            'data' => $data
+            'data' => $list
         ];
 
     }
