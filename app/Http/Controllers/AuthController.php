@@ -56,14 +56,13 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
 
-
         $user = User::where('email', $request->input('email'))->first();
 
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
             return response()->json([
                 'success' => false,
                 'error' => 'Username or password is incorrect'
-            ]);
+            ], 401);
 
         }
 
