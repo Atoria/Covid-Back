@@ -34,7 +34,7 @@ class CountryService
                 ActivityLog::JOB_COUNTRY,
                 ActivityLog::TYPE_ERROR,
                 $message);
-            var_dump($message);
+            Log::error($message);
             return false;
         }
 
@@ -63,7 +63,7 @@ class CountryService
                 ActivityLog::JOB_COUNTRY,
                 ActivityLog::TYPE_INFORMATION,
                 'Saved ' . count($insertData) . ' country');
-            var_dump('Saved ' . count($insertData) . ' country');
+            Log::info('Saved ' . count($insertData) . ' country');
             DB::commit();
 
         } catch (\Exception $e) {
@@ -74,7 +74,7 @@ class CountryService
                 ActivityLog::TYPE_ERROR,
                 'Error occurred: ' . $e->getMessage() . ' Trace:' . $e->getTraceAsString());
 
-            var_dump('Error occurred: ' . $e->getMessage() . ' Trace:' . $e->getTraceAsString());
+            Log::error('Error occurred: ' . $e->getMessage() . ' Trace:' . $e->getTraceAsString());
 
             return false;
         }

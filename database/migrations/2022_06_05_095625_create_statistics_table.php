@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->integer('confirmed');
             $table->integer('recovered');
+            $table->integer('critical');
             $table->integer('deaths');
             $table->timestamps();
         });
