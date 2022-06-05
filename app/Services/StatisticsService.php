@@ -81,4 +81,17 @@ class StatisticsService
 
         return true;
     }
+
+
+    public static function GetSummary()
+    {
+        return Statistics::select(
+            DB::raw('SUM(confirmed) as confirmed'),
+            DB::raw('SUM(recovered) as recovered'),
+            DB::raw('SUM(critical) as critical'),
+            DB::raw('SUM(deaths) as deaths')
+        )->get()->toArray();
+
+    }
+
 }

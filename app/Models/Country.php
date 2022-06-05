@@ -19,31 +19,6 @@ class Country extends Model
 
 
     /**
-     * @param null $limit
-     * @param null $offset
-     * @return array
-     * Returns Country List
-     */
-    public static function getCountries($limit = null, $offset = null)
-    {
-        $query = new Country;
-
-        if ($limit && $offset) {
-            $query = $query->skip($offset)->take($limit);
-        }
-
-        $total = $query->count();
-        $countries = $query->get();
-
-        $data = self::getListData($countries);
-
-        return [
-            'total' => $total,
-            'data' => $data
-        ];
-    }
-
-    /**
      * @param $countries
      * @return array
      * Converts Country object to displayable array

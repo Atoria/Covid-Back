@@ -27,40 +27,6 @@ class Statistics extends Model
 
 
     /**
-     * @param $date
-     * @param null $limit
-     * @param null $offset
-     * @return array
-     * Returns statistics data by chosen date
-     */
-    public static function getStatisticsByDate($date, $limit = null, $offset = null): array
-    {
-        $query = new Statistics;
-        if ($limit && $offset) {
-            $query = $query->skip($offset)->take($limit);
-        }
-
-        $query = $query->where(DB::raw("DATE_FORMAT(`created_at`, '%Y-%m-%d')"), '=', "$date");
-
-        $total = $query->count();
-        $statistics = $query->get();
-
-        $data = [];
-
-        foreach ($statistics as $statistic) {
-            $data[$statistic->country_id] = $statistic->getData();
-        }
-
-        return [
-            'data' => $data,
-            'total' => $total
-        ];
-
-
-    }
-
-
-    /**
      * @return array
      * Returns formatted data
      */
@@ -76,7 +42,6 @@ class Statistics extends Model
             'deaths' => $this->deaths
         ];
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
