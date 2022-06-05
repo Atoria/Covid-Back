@@ -21,7 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/stats', [StatisticsController::class, 'stats']);
-    Route::post('/summary', [StatisticsController::class, 'summary']);
+    Route::get('/stats', [StatisticsController::class, 'stats']);
+    Route::get('/summary', [StatisticsController::class, 'summary']);
 
 });

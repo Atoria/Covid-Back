@@ -83,7 +83,11 @@ class StatisticsService
     }
 
 
-    public static function GetSummary()
+    /**
+     * @return mixed
+     * Returns total number of statistics
+     */
+    public static function getSummary(): mixed
     {
         return Statistics::select(
             DB::raw('SUM(confirmed) as confirmed'),
@@ -93,5 +97,48 @@ class StatisticsService
         )->get()->toArray();
 
     }
+
+
+    /**
+     *Returns data per country
+     */
+    public static function getStats($parameters)
+    {
+        $query = Country::select(
+            'countries.code',
+            'countries.name',
+            DB::raw('SUM(confirmed) as confirmed'),
+            DB::raw('SUM(recovered) as recovered'),
+            DB::raw('SUM(critical) as critical'),
+            DB::raw('SUM(deaths) as deaths')
+        )
+            ->leftJoin('statistics', 'countries.id', '=', 'statistics.country_id');
+
+        if ($parameters['column']  && $parameters['order']) {
+            $query = $query->orderBy($parameters['column'], $parameters['order']);
+        }
+        $query = $query->groupBy('countries.code');
+
+        $total = $query->get()->count();
+
+        if ($parameters['search']) {
+            $query = $query->orWhere('countries.code', '=', $parameters['search'])
+                ->orWhere('countries.name', '=', $parameters['search']);
+        }
+
+
+        if ($parameters['offset'] != null && $parameters['limit'] != null) {
+            $query = $query->skip($parameters['offset'])->take($parameters['limit']);
+        }
+
+        $data = $query->get()->toArray();
+
+        return [
+            'total' => $total,
+            'data' => $data
+        ];
+
+    }
+
 
 }
