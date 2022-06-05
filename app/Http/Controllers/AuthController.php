@@ -31,7 +31,7 @@ class AuthController extends Controller
             'success' => true,
             'user' => $user->getData(),
             'token' => $token
-        ]);
+        ],201);
     }
 
     /**
